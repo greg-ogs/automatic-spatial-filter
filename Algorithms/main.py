@@ -303,24 +303,26 @@ class Camera:
             # Testing first move (stage 1 algorithm)
             stage1 = Stage2ANN
             loop_aux = 0
-            while True:
-                loop_aux = loop_aux + 1
-                points, midd_point = stage1.prepare_data()
-                X = points[loop_aux][0]
-                Y = points[loop_aux][1]
-                # qry.map_sql(X, Y)
-                qry.qy(X, Y)
-                qry.next_step()
-                image_result = cam.GetNextImage(100)
+            from_0 = input("Starting from 0? [Y/N]: ")
+            if from_0 == 'Y' or from_0 == 'y':
+                while True:
+                    loop_aux = loop_aux + 1
+                    points, midd_point = stage1.prepare_data()
+                    X = points[loop_aux][0]
+                    Y = points[loop_aux][1]
+                    # qry.map_sql(X, Y)
+                    qry.qy(X, Y)
+                    qry.next_step()
+                    image_result = cam.GetNextImage(100)
 
-                #  Ensure image completion
-                if image_result.IsIncomplete():
-                    print('Image incomplete with image status %d ...' % image_result.GetImageStatus())
+                    #  Ensure image completion
+                    if image_result.IsIncomplete():
+                        print('Image incomplete with image status %d ...' % image_result.GetImageStatus())
 
-                else:
-                    image_data = image_result.GetNDArray()
-                    if np.mean(image_data) > 100:
-                        break
+                    else:
+                        image_data = image_result.GetNDArray()
+                        if np.mean(image_data) > 100:
+                            break
             while self.continue_recording:
                 aux = aux + 1
                 try:
